@@ -1,0 +1,60 @@
+@import '../../styles/main.scss';
+
+.card {
+  display: flex;
+  width: 48%;
+  padding: 15px;
+  gap: 15px;
+  border-radius: 25px;
+  background-color: $card-bg-color;
+  box-shadow: $box-shadow;
+  transition: transform .6s ease-out;
+
+  &:hover {
+    transform: scale(1.02);
+    transition: transform .6s ease-out;
+  }
+
+  .cover {
+    max-width: 180px;
+    max-height: 280px;
+    border-radius: 25px;
+  }
+
+  .text-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    .title {
+      font: {
+        size: 20px;
+        weight: 600;
+      }
+    }
+    
+    .opening, .genres {
+      color: $secondary-color;
+    }
+
+    .genres {
+      display: flex;
+      gap: 5px;
+      margin-top: -8px;
+    }
+    .genre {
+      padding: 3px;
+      border: 1px solid $border-color;
+      border-radius: 5px;
+    }
+    .description {
+      p {
+        -webkit-line-clamp: 6;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 150%;
+      }
+    }
+  }
+}
