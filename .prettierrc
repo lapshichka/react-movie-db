@@ -1,0 +1,12 @@
+{
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "printWidth": 120,
+  "eslintIntegration": true,
+  "bracketSpacing": true,
+  "semi": false,
+  "arrowParens": "always",
+  "cssEnable": ["css", "less", "scss"],
+  "javascriptEnable": ["javascript", "javascriptreact"],
+  "jsonEnable": ["json"]
+}

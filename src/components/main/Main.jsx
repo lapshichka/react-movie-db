@@ -1,6 +1,6 @@
-import React from 'react';
-import Card from '../Card/Card';
-import "./main.scss";
+import React from 'react'
+import Card from '../card/Card'
+import "./main.scss"
 
 function Main() {
   return (
@@ -14,4 +14,4 @@ function Main() {
   )
 }
 
-export default Main;
+export default Main

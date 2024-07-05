@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 // import "./App.scss";
 
 function Header() {
@@ -9,4 +9,4 @@ function Header() {
   )
 }
 
-export default Header;
+export default Header

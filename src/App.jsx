@@ -1,7 +1,7 @@
-import React from 'react';
-import Header from './components/header/Header';
-import Footer from './components/footer/Footer';
-import Main from './components/main/Main';
+import React from 'react'
+import Header from './components/header/Header'
+import Footer from './components/footer/Footer'
+import Main from './components/main/Main'
 
 function App() {
   return (
@@ -13,4 +13,4 @@ function App() {
   )
 }
 
-export default App;
+export default App

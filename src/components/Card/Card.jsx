@@ -1,5 +1,5 @@
-import React from 'react';
-import "./card.scss";
+import React from 'react'
+import "./card.scss"
 
 function Card() {
   return (
@@ -17,8 +17,7 @@ function Card() {
         </div>
         <div className='description'>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia assumenda temporibus omnis voluptate, officiis repellat natus obcaecati molestias esse ut neque nemo? Porro vero accusantium reiciendis ab labore rerum? Dolorum.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae sapiente voluptate quia consequuntur ipsa ea id rerum distinctio at in? Reprehenderit corrupti excepturi autem est laboriosam sunt sapiente porro quasi.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
           </p>
         </div>
       </div>
@@ -26,4 +25,4 @@ function Card() {
   )
 }
 
-export default Card;
+export default Card
