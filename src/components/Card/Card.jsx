@@ -1,28 +1,47 @@
 import React from 'react'
 import "./card.scss"
 
-function Card() {
-  return (
-    <div className='card'>
-      <div>
-        <img className='cover' src="https://avatars.mds.yandex.net/get-kinopoisk-image/6201401/8472ca52-2751-4bbe-9a08-8a1be75f93d5/300x450" alt="Бумажный дом" />
-      </div>
+import PropTypes from 'prop-types'
 
-      <div className='text-content'>
-        <div className='title'>Money Heist</div>
-        <div className='opening'>December 20, 2017</div>
-        <div className='genres'>
-          <div className='genre'>Action</div>
-          <div className='genre'>Drama</div>
+function Card({data}) {
+  return (
+    <>
+      {data.map(({ posterPath, releaseDate, title, overview }) => (
+        <div className='card'>
+          <div>
+            <img className='cover' src={`https:/${posterPath}`} alt={`${title}`} />
+          </div>
+  
+          <div className='text-content'>
+            <div className='title'>{title}</div>
+            {/* December 20, 2017 */}
+            <div className='opening'>{releaseDate}</div>
+            <div className='genres'>
+              <div className='genre'>Action</div>
+              <div className='genre'>Drama</div>
+            </div>
+            <div className='description'>
+              <p>
+                {overview}
+              </p>
+            </div>
+          </div>
         </div>
-        <div className='description'>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-          </p>
-        </div>
-      </div>
-    </div>
+      ))}
+    </>
   )
 }
-
+Card.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      posterPath: PropTypes.string.isRequired,
+      releaseDate: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      overview: PropTypes.string.isRequired,
+    })
+  )
+}
+Card.defaultProps = {
+  data: []
+}
 export default Card
