@@ -1,15 +1,20 @@
 import React from 'react'
-import Header from './components/header/Header'
-import Footer from './components/footer/Footer'
+import { Flex, Layout } from 'antd'
+
+import SiteHeader from './components/header/SiteHeader'
+import SiteFooter from './components/footer/SiteFooter'
 import Main from './components/main/Main'
 
 function App() {
+
   return (
-    <div className='wrapper'>
-      <Header />
-      <Main />
-      <Footer />
-    </div>
+    <Flex gap="middle" wrap>
+      <Layout className='wrapper'>
+        <SiteHeader />
+        <Main />
+        <SiteFooter />
+      </Layout>
+    </Flex>
   )
 }
 

@@ -1,15 +1,17 @@
 import React, {Component} from 'react'
-import Card from '../card/Card'
+import { Flex, Layout, Pagination } from 'antd'
+
+import Card from '../card/Cards'
 import "./main.scss"
 import getMovie from '../../services/apiClient'
-
 
 export default class Main extends Component {
   constructor() {
     super()
     this.state = {
       data: [],
-      error: null
+      error: null,
+      currentPage: 1
     }
     this.updateMovie()
   }
@@ -20,13 +22,13 @@ export default class Main extends Component {
       const {results} = await data
 
       const selectedDate = results.map((item) => ({
+        id: item.id,
         posterPath: item.poster_path,
         releaseDate: item.release_date,
         title: item.title,
         overview: item.overview
       })
     )
-    console.log('selectedDate', selectedDate)
 
       this.setState({data: selectedDate})
     } catch (error) {
@@ -34,16 +36,26 @@ export default class Main extends Component {
     }
   }
 
+  paginate = (pageNumber) => {
+    this.setState({currentPage: pageNumber})
+  }
+
   render() {
-    const { data, error } = this.state
-    console.log('data', data)
+    const { data, error, currentPage } = this.state
+    const { Content } = Layout
+
+    const lastMovieIndex = currentPage * 6
+    const firstMovieIndex = lastMovieIndex - 6
+    const currentMovie = data.slice(firstMovieIndex, lastMovieIndex)
+    const total = Math.round(data.length / 6 * 10)
 
     return (
-      <main className='main'>
-        <div className='container'>
-          <Card data={data}/>
-        </div>
-      </main>
+      <Content className='main'>
+        <Flex wrap gap="middle" justify='center' className='container'>
+          <Card data={currentMovie}/>
+          <Pagination className='pagination' defaultCurrent={1} total={total} onChange={this.paginate}/>
+        </Flex>
+      </Content>
     )
   }
 }
