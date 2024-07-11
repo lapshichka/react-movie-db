@@ -1,21 +1,19 @@
 @import '../../styles/main.scss';
 
 .card {
-  width: 48%;
-  height: 250px;
-
-  .text-content {
-    width: 70%;
-    height: 200px;
+  &__text-content {
+    width: 60%;
+    height: 190px;
     font-family: $primary-font;
-    min-height: 0;
     overflow: hidden;
-
-    .title {
+  }
+  .text-content {
+    &__title {
       text-overflow: ellipsis;
+      font-family: $primary-font;
     }
 
-    .opening, .genre {
+    &__opening, &__genre {
       color: $secondary-color;
       font: {
         size: 13px;
@@ -23,12 +21,12 @@
       }
     }
 
-    .genre {
+    &__genre {
       padding: 1px 3px;
       border: 1px solid $border-color;
       border-radius: 5px;
     }
-    .description {
+    &__description {
       font-family: $primary-font;
       line-clamp: 4;
       -webkit-line-clamp: 4;

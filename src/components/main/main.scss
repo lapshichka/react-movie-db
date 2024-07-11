@@ -1,11 +1,11 @@
 .main {
   position: relative;
 
-  .container {
+  &__container {
     padding: 15px;
   }
-  .pagination {
+  &__pagination {
     position: absolute;
-    bottom: 20px;
+    bottom: 0;
   }
 }

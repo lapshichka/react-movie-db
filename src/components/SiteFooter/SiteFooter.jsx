@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout } from 'antd'
+import { Layout, Flex } from 'antd'
 
 // import "./App.scss";
 
@@ -7,8 +7,10 @@ function SiteFooter() {
   const { Footer } = Layout
 
   return (
-    <Footer className='container'>
-      Build with ...
+    <Footer className='footer'>
+      <Flex className='footer__container'>
+        Build with ...
+      </Flex>
     </Footer>
   )
 }

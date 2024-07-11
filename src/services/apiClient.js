@@ -1,4 +1,3 @@
-import React from 'react'
 import axios from 'axios'
 
   const getMovie = async (query) => {

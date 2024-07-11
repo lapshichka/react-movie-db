@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout } from 'antd'
+import { Layout, Flex } from 'antd'
 
 // import "./App.scss";
 
@@ -7,8 +7,10 @@ function SiteHeader() {
   const { Header } = Layout
 
   return (
-    <Header className='container'>
-      Header
+    <Header className='header'>
+      <Flex className='header__container'>
+        Header
+      </Flex>
     </Header>
   )
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Flex, Layout } from 'antd'
 
-import SiteHeader from './components/header/SiteHeader'
-import SiteFooter from './components/footer/SiteFooter'
-import Main from './components/main/Main'
+import SiteHeader from './components/SiteHeader/SiteHeader'
+import SiteFooter from './components/SiteFooter/SiteFooter'
+import Main from './components/Main/Main'
 
 function App() {
 

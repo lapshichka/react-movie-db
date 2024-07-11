@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import { Flex, Layout, Pagination } from 'antd'
+import "./Main.scss"
 
-import Card from '../card/Cards'
-import "./main.scss"
+import MovieList from '../MovieList/MovieList'
 import getMovie from '../../services/apiClient'
 
 export default class Main extends Component {
@@ -51,9 +51,9 @@ export default class Main extends Component {
 
     return (
       <Content className='main'>
-        <Flex wrap gap="middle" justify='center' className='container'>
-          <Card data={currentMovie}/>
-          <Pagination className='pagination' defaultCurrent={1} total={total} onChange={this.paginate}/>
+        <Flex wrap gap="middle" justify='center' className='main__container'>
+          <MovieList className="main__movie-list movie" data={currentMovie} />
+          <Pagination className='main__pagination' defaultCurrent={1} total={total} onChange={this.paginate}/>
         </Flex>
       </Content>
     )
