@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "react-app",
+    "eslint:recommended", 
+    "airbnb", 
+    "prettier"
+  ],
+  "rules": {
+    "semi": [
+      2,
+      "never"
+    ],
+    "max-len": [
+      "error",
+      150,
+      {
+        "ignoreStrings": true
+      }
+    ],
+    "no-unused-vars": "off"
+  },
+  "ignorePatterns": [
+    "node_modules/*",
+    "build/*"
+  ]
+}
