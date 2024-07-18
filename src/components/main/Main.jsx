@@ -8,6 +8,7 @@ import MovieList from '../MovieList/MovieList'
 import Spinner from '../Spinner/Spinner'
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator'
 import OfflineNotification from '../OfflineNotification/OfflineNotification'
+import defaultPoster from '../../assets/images/default_poster.jpg'
 
 
 export default class Main extends Component {
@@ -20,16 +21,20 @@ export default class Main extends Component {
       currentPage: 1,
       isOnline: navigator.onLine
     }
+    this.mounted = false
+
     this.apiClient = new ApiClient()
     this.updateMovie()
   }
 
   componentDidMount() {
+    this.mounted = true
     window.addEventListener('online', this.updateNetworkStatus)
     window.addEventListener('offline', this.updateNetworkStatus)
   }
 
   componentWillUnmount() {
+    this.mounted = false
     window.removeEventListener('online', this.updateNetworkStatus)
     window.removeEventListener('offline', this.updateNetworkStatus)
   }
@@ -41,10 +46,11 @@ export default class Main extends Component {
   updateMovie = async() => {
     try {
       const data = await this.apiClient.getAllMovie()
-      const selectedDate = await data
+      const selectedDate = data
       
-
-      this.setState({data: selectedDate, isLoaded: false})
+      if (this.mounted) {
+        this.setState({data: selectedDate, isLoaded: false})
+      }
     } catch (error) {
       this.setState({error, isLoaded: false})
     }
@@ -90,15 +96,20 @@ MovieView.propTypes = {
   currentMovie: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      posterPath: PropTypes.string.isRequired,
-      releaseDate: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      overview: PropTypes.string.isRequired,
+      posterPath: PropTypes.string,
+      releaseDate: PropTypes.instanceOf(Date),
+      title: PropTypes.string,
+      overview: PropTypes.string,
     })
   ),
   total: PropTypes.number.isRequired,
   paginate: PropTypes.func.isRequired,
 }
 MovieView.defaultProps = {
-  currentMovie: []
+  currentMovie: [{
+    posterPath: defaultPoster,
+    releaseDate: 'Unknown release date',
+    title: 'Untitled Movie',
+    overview: 'No description',
+  }]
 }

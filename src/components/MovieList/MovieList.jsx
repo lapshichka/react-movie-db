@@ -2,7 +2,7 @@ import React from 'react'
 import { List } from 'antd'
 import PropTypes from 'prop-types'
 import MovieCard from '../MovieCard/MovieCard'
-
+import defaultPoster from '../../assets/images/default_poster.jpg'
 
 function MovieList({data}) {
   const {Item} = List
@@ -28,14 +28,19 @@ MovieList.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      posterPath: PropTypes.string.isRequired,
-      releaseDate: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      overview: PropTypes.string.isRequired,
+      posterPath: PropTypes.string,
+      releaseDate: PropTypes.instanceOf(Date),
+      title: PropTypes.string,
+      overview: PropTypes.string,
     })
   )
 }
 MovieList.defaultProps = {
-  data: []
+  data: [{
+    posterPath: defaultPoster,
+    releaseDate: 'Unknown release date',
+    title: 'Untitled Movie',
+    overview: 'No description',
+  }]
 }
 export default MovieList

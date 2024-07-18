@@ -1,4 +1,5 @@
 import axios from 'axios'
+import defaultPoster from '../assets/images/default_poster.jpg'
 
 class ApiClient {
   constructor() {
@@ -19,13 +20,13 @@ class ApiClient {
   }
 
   transformMovie(movie) {
-    this.apiKey = null
+    this.apiKey = '4f4e06ffddf93e3d3cb52e91fda3b9a7'
     return {
       id: movie.id,
-      posterPath: movie.poster_path,
-      releaseDate: movie.release_date,
-      title: movie.title,
-      overview: movie.overview,
+      posterPath: movie.poster_path ? movie.poster_path : defaultPoster,
+      releaseDate: movie.release_date ? new Date(movie.release_date) : 'Unknown release date',
+      title: movie.title ? movie.title : 'Untitled Movie',
+      overview: movie.overview ? movie.overview : 'No description',
     }
   }
 }
