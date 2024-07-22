@@ -9,6 +9,7 @@ import Spinner from '../Spinner/Spinner'
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator'
 import OfflineNotification from '../OfflineNotification/OfflineNotification'
 import defaultPoster from '../../assets/images/default_poster.jpg'
+import SearchInput from '../SearchInput/SearchInput'
 
 
 export default class Main extends Component {
@@ -19,18 +20,28 @@ export default class Main extends Component {
       error: null,
       isLoaded: true,
       currentPage: 1,
-      isOnline: navigator.onLine
+      isOnline: navigator.onLine,
+      queryName: '',
     }
     this.mounted = false
-
     this.apiClient = new ApiClient()
-    this.updateMovie()
   }
 
   componentDidMount() {
+    const {currentPage} = this.state
+    this.updateMovie('return', currentPage)
     this.mounted = true
+
     window.addEventListener('online', this.updateNetworkStatus)
     window.addEventListener('offline', this.updateNetworkStatus)
+  }
+
+  componentDidUpdate(prebProps, prevState) {
+    const {currentPage, queryName} = this.state
+
+    if(prevState.currentPage !== currentPage) {
+      this.updateMovie(queryName, currentPage)
+    }
   }
 
   componentWillUnmount() {
@@ -43,13 +54,14 @@ export default class Main extends Component {
     this.setState({isOnline: navigator.onLine})
   }
 
-  updateMovie = async() => {
+  updateMovie = async (query, page) => {
+    // this.setState({isLoaded: true})
     try {
-      const data = await this.apiClient.getAllMovie()
+      const data = await this.apiClient.getAllMovie(query, page)
       const selectedDate = data
       
       if (this.mounted) {
-        this.setState({data: selectedDate, isLoaded: false})
+        this.setState({data: selectedDate, isLoaded: false, queryName: query})
       }
     } catch (error) {
       this.setState({error, isLoaded: false})
@@ -61,17 +73,17 @@ export default class Main extends Component {
   }
 
   render() {
-    const { data, error, isLoaded, currentPage, isOnline } = this.state
+    const { data, error, isLoaded, currentPage, isOnline, queryName } = this.state
     const { Content } = Layout
 
-    const lastMovieIndex = currentPage * 6
-    const firstMovieIndex = lastMovieIndex - 6
-    const currentMovie = data.slice(firstMovieIndex, lastMovieIndex)
-    const total = Math.round(data.length / 6 * 10)
+    // const total = Math.round(data.length / 6 * 10)
 
     const spinner = isLoaded ? <Spinner /> : null
     const visibleError = error? <ErrorIndicator errorText={error} /> : null
-    const content = !(isLoaded || error || !isOnline) ? <MovieView currentMovie={currentMovie} total={total} paginate={this.paginate} /> : null
+    const content =
+      !(isLoaded || error || !isOnline)
+      ? <MovieView currentMovie={data} paginate={this.paginate} currentPage={currentPage} updateMovie={this.updateMovie} /> 
+      : null
 
     return (
       <Content className='main'>
@@ -84,11 +96,12 @@ export default class Main extends Component {
   }
 }
 
-function MovieView({ currentMovie, total, paginate }) {
+function MovieView({ currentMovie, currentPage, total, paginate, updateMovie }) {
   return (
-    <Flex wrap gap="middle" justify='center' className='main__container'>
+    <Flex gap="middle" align='center' className='main__container'>
+      <SearchInput updateMovie={updateMovie} page={currentPage} />
       <MovieList className="main__movie-list movie" data={currentMovie} />
-      <Pagination className='main__pagination' defaultCurrent={1} total={total} onChange={paginate}/>
+      <Pagination className='main__pagination' defaultCurrent={1} total={40} onChange={paginate}/>
     </Flex>
   )
 }
@@ -104,6 +117,9 @@ MovieView.propTypes = {
   ),
   total: PropTypes.number.isRequired,
   paginate: PropTypes.func.isRequired,
+  updateMovie: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  // queryName: PropTypes.string.isRequired,
 }
 MovieView.defaultProps = {
   currentMovie: [{

@@ -17,8 +17,8 @@ function MovieCard({posterPath, releaseDate, title, overview}) {
         <Image
           className='card__image'
           src={path}
-          width={150}
-          height={190}
+          width={115}
+          height={165}
           preview={false}
         />
         

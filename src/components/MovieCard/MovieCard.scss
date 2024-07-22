@@ -3,7 +3,7 @@
 .card {
   &__text-content {
     width: 60%;
-    height: 190px;
+    height: 165px;
     font-family: $primary-font;
     overflow: hidden;
   }
@@ -29,7 +29,7 @@
     &__description {
       font-family: $primary-font;
       line-clamp: 4;
-      -webkit-line-clamp: 4;
+      -webkit-line-clamp: 3;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       overflow: hidden;
