@@ -1,7 +1,9 @@
 .main {
+  min-height: 100%;
   &__container {
     padding: 15px;
     height: 100%;
+    // min-height: 100vh;
     flex-direction: column;
   }
   &__movie-list {

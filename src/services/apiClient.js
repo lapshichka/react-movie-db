@@ -7,20 +7,21 @@ class ApiClient {
     this.firstApiUrl = 'https://api.themoviedb.org/3/search/movie'
   }
 
-  async getResours(query, page) {
-    const res = await fetch(`${this.firstApiUrl}?query=${query}&page=${page}&api_key=${this.apiKey}`)
+  async getResours(query, page = null) {
+    const res = await fetch(`${this.firstApiUrl}?query=${query}${page ? `&page=${page}` : ''}&api_key=${this.apiKey}`)
     return res.json()
   }
 
   async getAllMovie(query, page) {
-    const data = this.getResours(query, page)
+    const data = await this.getResours(query, page)
     const { results } = await data
 
-    const lastMovieIndex = page * 6
-    const firstMovieIndex = lastMovieIndex - 6
+    return results.map((movie) => this.transformMovie(movie))
+  }
 
-    const newData = results.map((movie) => this.transformMovie(movie))
-    return newData.slice(firstMovieIndex, lastMovieIndex)
+  async getTotalPages(query) {
+    const data = await this.getResours(query)
+    return data.total_pages
   }
 
   transformMovie(movie) {

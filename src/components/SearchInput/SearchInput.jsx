@@ -21,8 +21,8 @@ export default class SearchInput extends Component {
 
     if (title) {
       updateMovie(title, page)
-      this.setState({title: ''})
     }
+    this.setState({title: ''})
   }
 
   handleInputChange = (e) => {

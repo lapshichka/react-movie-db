@@ -9,6 +9,12 @@
   }
   .text-content {
     &__title {
+      min-height: 20px;
+      line-clamp: 1;
+      -webkit-line-clamp: 1;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
       text-overflow: ellipsis;
       font-family: $primary-font;
     }
@@ -28,10 +34,6 @@
     }
     &__description {
       font-family: $primary-font;
-      line-clamp: 4;
-      -webkit-line-clamp: 3;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
       overflow: hidden;
       line-height: 150%;
     }

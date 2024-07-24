@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Flex, Layout, Pagination } from 'antd'
+import { Flex, Layout, Pagination, Alert } from 'antd'
 import "./Main.scss"
 import PropTypes from 'prop-types'
 
@@ -18,10 +18,11 @@ export default class Main extends Component {
     this.state = {
       data: [],
       error: null,
-      isLoaded: true,
+      isLoaded: false,
       currentPage: 1,
       isOnline: navigator.onLine,
       queryName: '',
+      totalPages: 1,
     }
     this.mounted = false
     this.apiClient = new ApiClient()
@@ -29,7 +30,7 @@ export default class Main extends Component {
 
   componentDidMount() {
     const {currentPage} = this.state
-    this.updateMovie('return', currentPage)
+    this.updateMovie('', currentPage)
     this.mounted = true
 
     window.addEventListener('online', this.updateNetworkStatus)
@@ -55,7 +56,7 @@ export default class Main extends Component {
   }
 
   updateMovie = async (query, page) => {
-    // this.setState({isLoaded: true})
+    this.setState({isLoaded: true})
     try {
       const data = await this.apiClient.getAllMovie(query, page)
       const selectedDate = data
@@ -68,40 +69,65 @@ export default class Main extends Component {
     }
   }
 
+  getPages = async (query) => {
+    const totalPages = await this.apiClient.getTotalPages(query)
+    const total = await totalPages * 10
+
+    this.setState({totalPages: total})
+  }
+
   paginate = (pageNumber) => {
     this.setState({currentPage: pageNumber})
   }
 
   render() {
-    const { data, error, isLoaded, currentPage, isOnline, queryName } = this.state
+    const { data, error, isLoaded, currentPage, isOnline, queryName, totalPages } = this.state
     const { Content } = Layout
 
-    // const total = Math.round(data.length / 6 * 10)
+    this.getPages(queryName)
 
     const spinner = isLoaded ? <Spinner /> : null
     const visibleError = error? <ErrorIndicator errorText={error} /> : null
     const content =
-      !(isLoaded || error || !isOnline)
-      ? <MovieView currentMovie={data} paginate={this.paginate} currentPage={currentPage} updateMovie={this.updateMovie} /> 
+      !(error || !isOnline)
+      ? <MovieView 
+          currentMovie={data} 
+          paginate={this.paginate} 
+          currentPage={currentPage} 
+          total={totalPages} 
+          updateMovie={this.updateMovie} 
+          query={queryName}
+          load={isLoaded}
+        /> 
       : null
 
     return (
       <Content className='main'>
         {!isOnline ? <OfflineNotification /> : null}
-        {spinner}
         {visibleError}
         {content}
+        {spinner}
       </Content>
     )
   }
 }
 
-function MovieView({ currentMovie, currentPage, total, paginate, updateMovie }) {
+function MovieView({ currentMovie, currentPage, total, paginate, updateMovie, query, load }) {
+  const movie = !load
+  ? <MovieList className="main__movie-list movie" data={currentMovie} />
+  : null
+
+  const visible =
+  !query
+  ? <Alert message="Enter your search query" type="info" showIcon />
+  : <>
+      {movie}
+      <Pagination className='main__pagination' defaultCurrent={1} total={total} onChange={paginate} />
+    </>
   return (
     <Flex gap="middle" align='center' className='main__container'>
       <SearchInput updateMovie={updateMovie} page={currentPage} />
-      <MovieList className="main__movie-list movie" data={currentMovie} />
-      <Pagination className='main__pagination' defaultCurrent={1} total={40} onChange={paginate}/>
+      {visible}
     </Flex>
   )
 }
@@ -110,7 +136,10 @@ MovieView.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       posterPath: PropTypes.string,
-      releaseDate: PropTypes.instanceOf(Date),
+      releaseDate: PropTypes.oneOfType([
+        PropTypes.instanceOf(Date),
+        PropTypes.string
+      ]),
       title: PropTypes.string,
       overview: PropTypes.string,
     })
@@ -119,7 +148,8 @@ MovieView.propTypes = {
   paginate: PropTypes.func.isRequired,
   updateMovie: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
-  // queryName: PropTypes.string.isRequired,
+  query: PropTypes.string.isRequired,
+  load: PropTypes.bool.isRequired
 }
 MovieView.defaultProps = {
   currentMovie: [{

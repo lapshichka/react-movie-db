@@ -6,7 +6,7 @@ function ErrorIndicator({errorText}) {
   const {name, message} = errorText
 
   return (
-    <Flex justify='center' align='flex-start' className='main__container'>
+    <Flex align='center' justify="flex-start" className='main__container'>
       <Alert
         message={name}
         description={message}
