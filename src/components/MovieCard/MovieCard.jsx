@@ -2,33 +2,38 @@ import React, {Component} from 'react'
 import "./MovieCard.scss"
 import { Flex, Card, Image, Typography } from "antd"
 import { format } from "date-fns"
-import PropTypes, { array } from 'prop-types'
+import PropTypes from 'prop-types'
 import defaultPoster from '../../assets/images/default_poster.jpg'
-
+import ErrorIndicator from '../ErrorIndicator/ErrorIndicator'
 
 export default class MovieCard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      genre: []
+      genre: [],
+      error: null
     }
     this.getGenres()
   }
 
   getGenres = async () => {
-    const {genres} = this.props
+    try {
+      const {genres} = this.props
 
-    const res = genres
-    const genresData = await res
-    
-    if (Array.isArray(genresData) && genresData.length !== 0) {
-      this.setState({genre: genresData})
+      const res = genres
+      const genresData = await res
+      
+      if (Array.isArray(genresData) && genresData.length !== 0) {
+        this.setState({genre: genresData})
+      }
+    } catch (e) {
+      this.setState({error: e})
     }
   }
 
   render() {
     const {posterPath, releaseDate, title, overview} = this.props
-    const {genre} = this.state
+    const {genre, error} = this.state
 
     const { Title, Paragraph, Text } = Typography
 
@@ -39,8 +44,10 @@ export default class MovieCard extends Component {
   
     const path = !posterPath.includes('data:image') ? `https://media.themoviedb.org/t/p/w220_and_h330_face${posterPath}` : posterPath
   
-    return (
-      <Card hoverable className='card'>
+    const visibleError = error? <ErrorIndicator errorText={error} /> : null
+
+    const content = !error
+    ? <Card hoverable className='card'>
         <Flex gap="large">
           <Image
             className='card__image'
@@ -65,7 +72,14 @@ export default class MovieCard extends Component {
             </Paragraph>
           </Flex>
         </Flex>
-      </Card>
+      </Card> 
+    : null
+    
+    return (
+      <>
+        {visibleError}
+        {content}
+      </>
     )
 
   }
