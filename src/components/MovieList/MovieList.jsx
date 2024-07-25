@@ -4,8 +4,10 @@ import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
 import MovieCard from '../MovieCard/MovieCard'
 import defaultPoster from '../../assets/images/default_poster.jpg'
+import ApiClient from '../../services/apiClient'
 
 function MovieList({data}) {
+  const apiClient = new ApiClient()
   const {Item} = List
 
   const isMobile = useMediaQuery({query: '(max-width: 767.98px)'})
@@ -21,7 +23,7 @@ function MovieList({data}) {
       dataSource={data}
       renderItem={({id, posterPath, releaseDate, title, overview}) => (
         <Item key={id}>
-          <MovieCard className='movie__item' posterPath={posterPath} releaseDate={releaseDate} title={title} overview={overview}/>
+          <MovieCard className='movie__item' posterPath={posterPath} releaseDate={releaseDate} genres={apiClient.getMoviesWithGenres(id)} title={title} overview={overview}/>
         </Item>
       )}
     />
@@ -39,7 +41,7 @@ MovieList.propTypes = {
       title: PropTypes.string,
       overview: PropTypes.string,
     })
-  )
+  ),
 }
 MovieList.defaultProps = {
   data: [{

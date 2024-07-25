@@ -1,72 +1,41 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import "./MovieCard.scss"
 import { Flex, Card, Image, Typography } from "antd"
 import { format } from "date-fns"
-import PropTypes from 'prop-types'
+import PropTypes, { array } from 'prop-types'
 import defaultPoster from '../../assets/images/default_poster.jpg'
 
 
 export default class MovieCard extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      width: 0,
-      height: 0
+      genre: []
     }
-    this.containerRef = React.createRef()
+    this.getGenres()
   }
 
-  componentDidMount() {
-    this.updateSize()
-  }
+  getGenres = async () => {
+    const {genres} = this.props
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.containerRef.current && 
-      (prevState.width !== this.containerRef.current.offsetWidth || 
-      prevState.height !== this.containerRef.current.offsetHeight)) {
-    this.updateSize()
-  }
-  }
-
-  updateSize = () => {
-    if (this.containerRef.current) {
-      this.setState({
-        width: this.containerRef.current.offsetWidth,
-        height: this.containerRef.current.offsetHeight
-      })
+    const res = genres
+    const genresData = await res
+    
+    if (Array.isArray(genresData) && genresData.length !== 0) {
+      this.setState({genre: genresData})
     }
   }
 
-  trimTextToFit = (text) => {
-    const {width, height} = this.state
-    let newText = text
-  
-    const canvas = document.createElement('canvas')
-    const context = canvas.getContext('2d')
-  
-    const getTextWidth = (t) => context.measureText(t).width
-    const containerWidth = width
-    const lineHeight = 20
-    const maxLines = Math.floor(height / lineHeight)
-  
-    if (getTextWidth(newText) < containerWidth && maxLines) {
-      return newText
-    }
-  
-    newText = typeof newText === 'string' ? newText.split(' ') : newText
-    newText.splice(newText.length - 1, 1)
-  
-    if (getTextWidth(newText) > containerWidth && maxLines) {
-      this.trimTextToFit(newText)
-    }
-  
-    return `${newText.join(' ')}...`
-  }
-
-  render () {
+  render() {
     const {posterPath, releaseDate, title, overview} = this.props
-    const {width, height} = this.state
-    const { Title, Paragraph, Text, Link } = Typography
+    const {genre} = this.state
+
+    const { Title, Paragraph, Text } = Typography
+
+    const displayGenres = genre.map((item) => (
+      <Paragraph className='text-content__genre'>{item}</Paragraph>
+    ))
+
   
     const path = !posterPath.includes('data:image') ? `https://media.themoviedb.org/t/p/w220_and_h330_face${posterPath}` : posterPath
   
@@ -86,19 +55,19 @@ export default class MovieCard extends Component {
             <Paragraph className='text-content__opening'>
               {typeof releaseDate === 'object' ? format(releaseDate, 'MMMM dd, yyyy') : releaseDate }
             </Paragraph>
-            <Flex gap="small">
-              <Paragraph className='text-content__genre'>Action</Paragraph>
-              <Paragraph className='text-content__genre'>Drama</Paragraph>
+            <Flex wrap gap="small">
+              {displayGenres}
             </Flex>
             <Paragraph >
-              <Text ref={this.containerRef} disabled={overview.includes('No description')} className='text-content__description'>
-                {this.trimTextToFit(overview)}
+              <Text disabled={overview.includes('No description')} className='text-content__description'>
+                {overview}
               </Text>
             </Paragraph>
           </Flex>
         </Flex>
       </Card>
     )
+
   }
 }
 MovieCard.propTypes = {
@@ -109,6 +78,7 @@ MovieCard.propTypes = {
   ]),
   title: PropTypes.string,
   overview: PropTypes.string,
+  genres: PropTypes.func.isRequired,
 }
 MovieCard.defaultProps = {
   posterPath: defaultPoster,

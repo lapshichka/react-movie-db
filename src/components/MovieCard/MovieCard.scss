@@ -20,6 +20,7 @@
     }
 
     &__opening, &__genre {
+      padding-bottom: 5px;
       color: $secondary-color;
       font: {
         size: 13px;
@@ -31,9 +32,15 @@
       padding: 1px 3px;
       border: 1px solid $border-color;
       border-radius: 5px;
+      white-space: nowrap;
+      margin-top: -15px;
     }
     &__description {
       font-family: $primary-font;
+      line-clamp: 3;
+      -webkit-line-clamp: 3;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
       overflow: hidden;
       line-height: 150%;
     }
