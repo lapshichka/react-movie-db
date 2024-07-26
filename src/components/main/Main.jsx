@@ -32,10 +32,11 @@ export default class Main extends Component {
     window.addEventListener('offline', this.updateNetworkStatus)
   }
 
-  componentDidUpdate(prebProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     const {currentPage, queryName} = this.state
 
-    if(prevState.currentPage !== currentPage) {
+    if(prevState.currentPage !== currentPage || prevState.queryName !== queryName) {
+      this.getPages(queryName)
       this.updateMovie(queryName, currentPage)
     }
   }
@@ -65,9 +66,9 @@ export default class Main extends Component {
   }
 
   getPages = async (query) => {
-    const totalPages = await this.apiClient.getTotalPages(query)
-    const total = await totalPages * 10
-
+    const pages = await this.apiClient.getTotalPages(query)
+    const total = await pages * 10
+    
     this.setState({totalPages: total})
   }
 
@@ -78,8 +79,6 @@ export default class Main extends Component {
   render() {
     const { data, error, isLoaded, currentPage, isOnline, queryName, totalPages } = this.state
     const { Content } = Layout
-
-    this.getPages(queryName)
 
     const spinner = isLoaded ? <Spinner /> : null
     const visibleError = error? <ErrorIndicator errorText={error} /> : null

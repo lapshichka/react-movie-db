@@ -9,7 +9,7 @@
   }
   .text-content {
     &__title {
-      min-height: 20px;
+      min-height: 23px;
       line-clamp: 1;
       -webkit-line-clamp: 1;
       display: -webkit-box;
@@ -33,7 +33,7 @@
       border: 1px solid $border-color;
       border-radius: 5px;
       white-space: nowrap;
-      margin-top: -15px;
+      margin-top: -13px;
     }
     &__description {
       font-family: $primary-font;

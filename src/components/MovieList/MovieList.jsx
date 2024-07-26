@@ -23,7 +23,7 @@ function MovieList({data}) {
       dataSource={data}
       renderItem={({id, posterPath, releaseDate, title, overview}) => (
         <Item key={id}>
-          <MovieCard className='movie__item' posterPath={posterPath} releaseDate={releaseDate} genres={apiClient.getMoviesWithGenres(id)} title={title} overview={overview}/>
+          <MovieCard className='movie__item' id={id} posterPath={posterPath} releaseDate={releaseDate} genres={apiClient.getMoviesWithGenres(id)} title={title} overview={overview}/>
         </Item>
       )}
     />

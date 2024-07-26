@@ -33,7 +33,7 @@ class ApiClient {
 
   async getMoviesWithGenres(id) {
     const data = await this.getGenres(id)
-    return data.map(({name}) => name)
+    return data
   }
 
   transformMovie(movie) {
