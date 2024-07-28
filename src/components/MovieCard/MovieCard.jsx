@@ -27,13 +27,14 @@ export default class MovieCard extends Component {
 
   getGenres = async () => {
     try {
-      const {genres} = this.props
+      const {genres, genreIds} = this.props
 
       const res = genres
       const genresData = await res
       
-      if (Array.isArray(genresData) && genresData.length !== 0 && this.mounted) {
-        this.setState({genre: genresData})
+      if (Array.isArray(genreIds) && genreIds.length !== 0 && this.mounted) {
+        const names = genreIds.map(id => (genresData.find(genre => genre.id === id ? genre.name : null)))
+        this.setState({genre: names})
       }
     } catch (e) {
       this.setState({error: e})
@@ -104,7 +105,8 @@ MovieCard.propTypes = {
   ]),
   title: PropTypes.string,
   overview: PropTypes.string,
-  genres: PropTypes.instanceOf(Promise).isRequired
+  genres: PropTypes.instanceOf(Promise).isRequired,
+  genreIds: PropTypes.number.isRequired
 }
 MovieCard.defaultProps = {
   posterPath: defaultPoster,

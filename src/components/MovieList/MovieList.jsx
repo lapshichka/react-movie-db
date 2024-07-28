@@ -21,9 +21,9 @@ function MovieList({data}) {
       className='movie__list'
       
       dataSource={data}
-      renderItem={({id, posterPath, releaseDate, title, overview}) => (
+      renderItem={({id, posterPath, releaseDate, title, overview, genreIds}) => (
         <Item key={id}>
-          <MovieCard className='movie__item' id={id} posterPath={posterPath} releaseDate={releaseDate} genres={apiClient.getMoviesWithGenres(id)} title={title} overview={overview}/>
+          <MovieCard className='movie__item' id={id} posterPath={posterPath} releaseDate={releaseDate} genres={apiClient.getGenres()} title={title} overview={overview} genreIds={genreIds}/>
         </Item>
       )}
     />
@@ -40,6 +40,7 @@ MovieList.propTypes = {
       ]),
       title: PropTypes.string,
       overview: PropTypes.string,
+      genreIds: PropTypes.number.isRequired
     })
   ),
 }
