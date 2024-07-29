@@ -7,8 +7,7 @@ import defaultPoster from '../../assets/images/default_poster.jpg'
 
 function MovieView({ currentMovie, currentPage, total, paginate, updateMovie, query, load, genres }) {
   const movie = !load
-  ? <MovieList className="main__movie-list movie" data={currentMovie} genres={genres} />
-  : null
+  && <MovieList className="main__movie-list movie" data={currentMovie} genres={genres} />
 
   const visible =
   !query

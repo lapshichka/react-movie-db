@@ -14,8 +14,6 @@ class ApiClient {
   }
 
   async fetchGenres() {
-    console.log('fetchGenres')
-
     const res = await fetch(`${this.genreApiUrl}?api_key=${this.apiKey}`)
     const data = await res.json()
     return data.genres
@@ -37,11 +35,11 @@ class ApiClient {
     this.apiKey = '4f4e06ffddf93e3d3cb52e91fda3b9a7'
     return {
       id: movie.id,
-      posterPath: movie.poster_path ? movie.poster_path : defaultPoster,
-      releaseDate: movie.release_date ? new Date(movie.release_date) : 'Unknown release date',
-      title: movie.title ? movie.title : 'Untitled Movie',
-      overview: movie.overview ? movie.overview : 'No description',
-      genreIds: movie.genre_ids
+      posterPath: movie.poster_path || defaultPoster,
+      releaseDate: (movie.release_date && new Date(movie.release_date)) || 'Unknown release date',
+      title: movie.title || 'Untitled Movie',
+      overview: movie.overview || 'No description',
+      genreIds: movie.genre_ids,
     }
   }
 }

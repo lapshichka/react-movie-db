@@ -35,8 +35,8 @@ export default class SearchInput extends Component {
   render() {
     const {error} = this.state
 
-    const visibleError = error? <ErrorIndicator errorText={error} /> : null
-    const content = !error ? <Input onChange={this.handleInputChange} addonBefore={<SearchOutlined />} placeholder="Enter movie title..." /> : null
+    const visibleError = error && <ErrorIndicator errorText={error} />
+    const content = !error && <Input onChange={this.handleInputChange} addonBefore={<SearchOutlined />} placeholder="Enter movie title..." />
 
     return (
       <>

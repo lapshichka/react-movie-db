@@ -14,6 +14,7 @@ function MovieCard({id, posterPath, releaseDate, title, overview, genreIds, genr
   const filteredGenres = Array.isArray(genreIds) && genreIds.length !== 0
     ? genreIds.map(ids => (genres.find(genre => genre.id === ids && genre.name)))
     : ''
+    
   return (
     <Card key={id} hoverable className='card'>
       <Flex gap="large">

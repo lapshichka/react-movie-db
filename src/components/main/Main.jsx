@@ -54,8 +54,6 @@ export default class Main extends Component {
   }
 
   updateMovie = async (query, page) => {
-    console.log('updateMovie')
-
     this.setState({isLoaded: true})
     try {
       const data = await this.apiClient.getAllMovie(query, page)
@@ -81,7 +79,6 @@ export default class Main extends Component {
   }
 
   getGenres = async () => {
-    console.log('getGenres')
     const genres = this.apiClient.fetchGenres()
 
     const res = genres
@@ -96,11 +93,11 @@ export default class Main extends Component {
     const { data, error, isLoaded, currentPage, isOnline, queryName, totalPages, genre } = this.state
     const { Content } = Layout
 
-    const spinner = isLoaded ? <Spinner /> : null
-    const visibleError = error? <ErrorIndicator errorText={error} /> : null
+    const spinner = isLoaded && <Spinner />
+    const visibleError = error && <ErrorIndicator errorText={error} />
     const content =
       !(error || !isOnline)
-      ? <MovieView
+      && <MovieView
       currentMovie={data}
       paginate={this.paginate}
       currentPage={currentPage}
@@ -110,11 +107,10 @@ export default class Main extends Component {
       load={isLoaded}
       genres={genre}
     />
-      : null
 
     return (
       <Content className='main'>
-        {!isOnline ? <OfflineNotification /> : null}
+        {!isOnline && <OfflineNotification />}
         {visibleError}
         {content}
         {spinner}
