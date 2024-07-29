@@ -14,6 +14,7 @@ export default class Main extends Component {
     super()
     this.state = {
       data: [],
+      genre: [],
       error: null,
       isLoaded: false,
       currentPage: 1,
@@ -27,6 +28,7 @@ export default class Main extends Component {
 
   componentDidMount() {
     this.mounted = true
+    this.getGenres()
 
     window.addEventListener('online', this.updateNetworkStatus)
     window.addEventListener('offline', this.updateNetworkStatus)
@@ -52,6 +54,8 @@ export default class Main extends Component {
   }
 
   updateMovie = async (query, page) => {
+    console.log('updateMovie')
+
     this.setState({isLoaded: true})
     try {
       const data = await this.apiClient.getAllMovie(query, page)
@@ -76,8 +80,20 @@ export default class Main extends Component {
     this.setState({currentPage: pageNumber})
   }
 
+  getGenres = async () => {
+    console.log('getGenres')
+    const genres = this.apiClient.fetchGenres()
+
+    const res = genres
+    const genresData = await res
+
+    if (this.mounted) {
+      this.setState({genre: genresData})
+    }
+  }
+
   render() {
-    const { data, error, isLoaded, currentPage, isOnline, queryName, totalPages } = this.state
+    const { data, error, isLoaded, currentPage, isOnline, queryName, totalPages, genre } = this.state
     const { Content } = Layout
 
     const spinner = isLoaded ? <Spinner /> : null
@@ -92,6 +108,7 @@ export default class Main extends Component {
       updateMovie={this.updateMovie}
       query={queryName}
       load={isLoaded}
+      genres={genre}
     />
       : null
 
