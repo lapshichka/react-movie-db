@@ -7,6 +7,7 @@ import Spinner from '../Spinner/Spinner'
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator'
 import OfflineNotification from '../OfflineNotification/OfflineNotification'
 import MovieView from '../MovieView/MovieView'
+import { ApiClientConsumer } from '../ApiClientsContext/ApiClientsContext'
 
 
 export default class Main extends Component {
@@ -21,6 +22,7 @@ export default class Main extends Component {
       isOnline: navigator.onLine,
       queryName: '',
       totalPages: 1,
+      hasError: false,
     }
     this.mounted = false
     this.apiClient = new ApiClient()
@@ -41,6 +43,11 @@ export default class Main extends Component {
       this.getPages(queryName)
       this.updateMovie(queryName, currentPage)
     }
+  }
+
+  
+  componentDidCatch() {
+    this.setState({hasError: true})
   }
 
   componentWillUnmount() {
@@ -90,8 +97,12 @@ export default class Main extends Component {
   }
 
   render() {
-    const { data, error, isLoaded, currentPage, isOnline, queryName, totalPages, genre } = this.state
+    const { data, error, isLoaded, currentPage, isOnline, queryName, totalPages, genre, hasError } = this.state
     const { Content } = Layout
+
+    if (hasError) {
+      return <ErrorIndicator errorText={error} />
+    }
 
     const spinner = isLoaded && <Spinner />
     const visibleError = error && <ErrorIndicator errorText={error} />

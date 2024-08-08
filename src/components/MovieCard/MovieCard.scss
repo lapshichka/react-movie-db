@@ -2,14 +2,15 @@
 
 .card {
   &__text-content {
-    width: 60%;
-    height: 165px;
+    width: 77%;
+    // height: 200px;
     font-family: $primary-font;
     overflow: hidden;
   }
   .text-content {
     &__title {
-      min-height: 23px;
+      height: 23px;
+      max-width: 80%;
       line-clamp: 1;
       -webkit-line-clamp: 1;
       display: -webkit-box;
@@ -18,9 +19,13 @@
       text-overflow: ellipsis;
       font-family: $primary-font;
     }
+    &__rating {
+      border: 1px solid;
+      padding: 4px 5px;
+      border-radius: 50%;
+    }
 
     &__opening, &__genre {
-      padding-bottom: 5px;
       color: $secondary-color;
       font: {
         size: 13px;
@@ -29,12 +34,14 @@
     }
 
     &__genre {
+      margin-bottom: 3px;
       padding: 1px 3px;
       border: 1px solid $border-color;
       border-radius: 5px;
       white-space: nowrap;
-      margin-top: -13px;
+      // margin-top: -10px;
     }
+
     &__description {
       font-family: $primary-font;
       line-clamp: 3;

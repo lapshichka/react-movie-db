@@ -1,41 +1,64 @@
 import React from 'react'
 import "./MovieCard.scss"
-import { Flex, Card, Image, Typography, List } from "antd"
+import { Flex, Card, Image, Typography, List, Rate } from "antd"
 import { format } from "date-fns"
 import PropTypes from 'prop-types'
 import defaultPoster from '../../assets/images/default_poster.jpg'
 
-function MovieCard({id, posterPath, releaseDate, title, overview, genreIds, genres}) {
+function MovieCard({id, posterPath, releaseDate, title, overview, genreIds, genres, voteAverage}) {
   const { Title, Paragraph, Text } = Typography
   const {Item} = List
 
   const path = !posterPath.includes('data:image') ? `https://media.themoviedb.org/t/p/w220_and_h330_face${posterPath}` : posterPath
   
   const filteredGenres = Array.isArray(genreIds) && genreIds.length !== 0
-    ? genreIds.map(ids => (genres.find(genre => genre.id === ids && genre.name)))
-    : ''
+    && genreIds.map(ids => (genres.find(genre => genre.id === ids && genre.name))).slice(0, 3)
     
+  const assessmentStyle = (rating) => {
+    let color
+
+    if (rating <= 3) {
+      color = '#E90000'
+    } else if (rating > 3 && rating <= 5) {
+      color = '#E97E00'
+    } else if (rating > 5 && rating <= 7) {
+      color = '#E9D100'
+    } else {
+      color = '#66E900'
+    }
+    return color
+  }
+
   return (
     <Card key={id} hoverable className='card'>
-      <Flex gap="large">
+      <Flex gap="middle">
         <Image
           className='card__image'
           src={path}
-          width={115}
-          height={165}
+          width={140}
+          height={220}
           preview={false}
         />
         
-        <Flex vertical className='card__text-content text-content' >
-          <Title className='text-content__title' level={5}>{title}</Title>
+        <Flex vertical justify='space-between' className='card__text-content text-content' >
+          <Flex justify='space-between'>
+            <Title className='text-content__title' level={5}>{title}</Title>
+            <Paragraph
+              className='text-content__rating'
+              style={{borderColor: assessmentStyle(voteAverage)}}
+            >
+              {voteAverage.toFixed(1)}
+            </Paragraph>
+          </Flex>
           <Paragraph className='text-content__opening'>
             {typeof releaseDate === 'object' ? format(releaseDate, 'MMMM dd, yyyy') : releaseDate }
           </Paragraph>
           <List
             grid={{
-              gutter: 10,
+              gutter: 5,
             }}
             
+            split
             dataSource={filteredGenres}
             renderItem={({i, name}) =>
               <Item key={i}>
@@ -50,6 +73,8 @@ function MovieCard({id, posterPath, releaseDate, title, overview, genreIds, genr
               {overview}
             </Text>
           </Paragraph>
+
+          <Rate allowHalf count={10} />
         </Flex>
       </Flex>
     </Card>
@@ -75,6 +100,7 @@ MovieCard.propTypes = {
       name: PropTypes.string.isRequired
     })
   ),
+  voteAverage: PropTypes.number.isRequired,
 }
 MovieCard.defaultProps = {
   posterPath: defaultPoster,

@@ -17,7 +17,7 @@ body {
 }
 [class*="__container"] {
   background-color: $bg-color;
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 15px;
   color: $text-color;
@@ -26,8 +26,8 @@ body {
     family: $primary-font
   }
 
-  @media (max-width: 1087px) {
-    max-width: 970px;
+  @media (max-width: 1100px) {
+    max-width: 1000px;
   }
 
   @media (max-width: 991.98px) {

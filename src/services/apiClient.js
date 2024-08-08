@@ -40,6 +40,7 @@ class ApiClient {
       title: movie.title || 'Untitled Movie',
       overview: movie.overview || 'No description',
       genreIds: movie.genre_ids,
+      voteAverage: movie.vote_average || 0
     }
   }
 }

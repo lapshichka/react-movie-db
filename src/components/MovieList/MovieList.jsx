@@ -8,7 +8,7 @@ import defaultPoster from '../../assets/images/default_poster.jpg'
 function MovieList({data, genres}) {
   const {Item} = List
 
-  const isMobile = useMediaQuery({query: '(max-width: 767.98px)'})
+  const isMobile = useMediaQuery({query: '(max-width: 991.98px)'})
 
   return (
     <List
@@ -19,9 +19,19 @@ function MovieList({data, genres}) {
       className='movie__list'
       
       dataSource={data}
-      renderItem={({id, posterPath, releaseDate, title, overview, genreIds}) => (
+      renderItem={({id, posterPath, releaseDate, title, overview, genreIds, voteAverage}) => (
         <Item key={id}>
-          <MovieCard className='movie__item' id={id} posterPath={posterPath} releaseDate={releaseDate} genres={genres} title={title} overview={overview} genreIds={genreIds}/>
+          <MovieCard 
+              className='movie__item'
+              id={id}
+              posterPath={posterPath}
+              releaseDate={releaseDate}
+              genres={genres}
+              title={title}
+              overview={overview}
+              genreIds={genreIds}
+              voteAverage={voteAverage}
+            />
         </Item>
       )}
     />
@@ -42,7 +52,8 @@ MovieList.propTypes = {
         PropTypes.oneOfType([
           PropTypes.number.isRequired
         ])
-      )
+      ),
+      voteAverage: PropTypes.number.isRequired
     })
   ),
   genres: PropTypes.arrayOf(
@@ -50,7 +61,7 @@ MovieList.propTypes = {
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired
     })
-  )
+  ),
 }
 MovieList.defaultProps = {
   data: [{
