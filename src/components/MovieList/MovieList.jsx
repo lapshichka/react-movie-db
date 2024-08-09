@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import MovieCard from '../MovieCard/MovieCard'
 import defaultPoster from '../../assets/images/default_poster.jpg'
 
-function MovieList({data, genres}) {
+function MovieList({data, genres, guestId}) {
   const {Item} = List
 
   const isMobile = useMediaQuery({query: '(max-width: 991.98px)'})
@@ -19,7 +19,7 @@ function MovieList({data, genres}) {
       className='movie__list'
       
       dataSource={data}
-      renderItem={({id, posterPath, releaseDate, title, overview, genreIds, voteAverage}) => (
+      renderItem={({id, posterPath, releaseDate, title, overview, genreIds, voteAverage, rating}) => (
         <Item key={id}>
           <MovieCard 
               className='movie__item'
@@ -31,6 +31,8 @@ function MovieList({data, genres}) {
               overview={overview}
               genreIds={genreIds}
               voteAverage={voteAverage}
+              guestId={guestId}
+              rating={rating}
             />
         </Item>
       )}
@@ -53,7 +55,7 @@ MovieList.propTypes = {
           PropTypes.number.isRequired
         ])
       ),
-      voteAverage: PropTypes.number.isRequired
+      voteAverage: PropTypes.number.isRequired,
     })
   ),
   genres: PropTypes.arrayOf(
@@ -62,6 +64,7 @@ MovieList.propTypes = {
       name: PropTypes.string.isRequired
     })
   ),
+  guestId: PropTypes.string.isRequired
 }
 MovieList.defaultProps = {
   data: [{

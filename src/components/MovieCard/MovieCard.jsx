@@ -4,29 +4,37 @@ import { Flex, Card, Image, Typography, List, Rate } from "antd"
 import { format } from "date-fns"
 import PropTypes from 'prop-types'
 import defaultPoster from '../../assets/images/default_poster.jpg'
+import ApiClient from '../../services/apiClient'
 
-function MovieCard({id, posterPath, releaseDate, title, overview, genreIds, genres, voteAverage}) {
+function MovieCard({id, posterPath, releaseDate, title, overview, genreIds, genres, voteAverage = 0, guestId, rating = null}) {
   const { Title, Paragraph, Text } = Typography
   const {Item} = List
+
+  const apiClient = new ApiClient()
 
   const path = !posterPath.includes('data:image') ? `https://media.themoviedb.org/t/p/w220_and_h330_face${posterPath}` : posterPath
   
   const filteredGenres = Array.isArray(genreIds) && genreIds.length !== 0
-    && genreIds.map(ids => (genres.find(genre => genre.id === ids && genre.name))).slice(0, 3)
-    
-  const assessmentStyle = (rating) => {
+    ? genreIds.map(ids => (genres.find(genre => genre.id === ids && genre.name))).splice(0, 3)
+    : ''
+
+  const assessmentStyle = (rate) => {
     let color
 
-    if (rating <= 3) {
+    if (rate <= 3) {
       color = '#E90000'
-    } else if (rating > 3 && rating <= 5) {
+    } else if (rate > 3 && rate <= 5) {
       color = '#E97E00'
-    } else if (rating > 5 && rating <= 7) {
+    } else if (rate > 5 && rate <= 7) {
       color = '#E9D100'
     } else {
       color = '#66E900'
     }
     return color
+  }
+
+  const handleRateMovie = (value) => {
+    apiClient.rateMovie(guestId, id, value)
   }
 
   return (
@@ -74,7 +82,7 @@ function MovieCard({id, posterPath, releaseDate, title, overview, genreIds, genr
             </Text>
           </Paragraph>
 
-          <Rate allowHalf count={10} />
+          <Rate allowHalf defaultValue={rating} count={10} onChange={handleRateMovie} />
         </Flex>
       </Flex>
     </Card>
@@ -101,6 +109,8 @@ MovieCard.propTypes = {
     })
   ),
   voteAverage: PropTypes.number.isRequired,
+  guestId: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired
 }
 MovieCard.defaultProps = {
   posterPath: defaultPoster,

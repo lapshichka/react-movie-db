@@ -5,9 +5,9 @@ import MovieList from '../MovieList/MovieList'
 import SearchInput from '../SearchInput/SearchInput'
 import defaultPoster from '../../assets/images/default_poster.jpg'
 
-function MovieView({ currentMovie, currentPage, total, paginate, updateMovie, query, load, genres }) {
+function MovieView({ currentMovie, currentPage, total, paginate, updateMovie, query, load, genres, guestId }) {
   const movie = !load
-  && <MovieList className="main__movie-list movie" data={currentMovie} genres={genres} />
+  && <MovieList className="main__movie-list movie" data={currentMovie} genres={genres} guestId={guestId} />
 
   const visible =
   !query
@@ -47,7 +47,8 @@ MovieView.propTypes = {
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired
     })
-  )
+  ),
+  guestId: PropTypes.string.isRequired
 }
 MovieView.defaultProps = {
   currentMovie: [{

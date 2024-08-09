@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Layout } from 'antd'
 import "./Main.scss"
 
@@ -9,13 +10,11 @@ import OfflineNotification from '../OfflineNotification/OfflineNotification'
 import MovieView from '../MovieView/MovieView'
 import { ApiClientConsumer } from '../ApiClientsContext/ApiClientsContext'
 
-
 export default class Main extends Component {
   constructor() {
     super()
     this.state = {
       data: [],
-      genre: [],
       error: null,
       isLoaded: false,
       currentPage: 1,
@@ -30,7 +29,6 @@ export default class Main extends Component {
 
   componentDidMount() {
     this.mounted = true
-    this.getGenres()
 
     window.addEventListener('online', this.updateNetworkStatus)
     window.addEventListener('offline', this.updateNetworkStatus)
@@ -45,7 +43,6 @@ export default class Main extends Component {
     }
   }
 
-  
   componentDidCatch() {
     this.setState({hasError: true})
   }
@@ -85,20 +82,11 @@ export default class Main extends Component {
     this.setState({currentPage: pageNumber})
   }
 
-  getGenres = async () => {
-    const genres = this.apiClient.fetchGenres()
-
-    const res = genres
-    const genresData = await res
-
-    if (this.mounted) {
-      this.setState({genre: genresData})
-    }
-  }
-
   render() {
-    const { data, error, isLoaded, currentPage, isOnline, queryName, totalPages, genre, hasError } = this.state
+    const { guestId, genre } = this.props
+    const { data, error, isLoaded, currentPage, isOnline, queryName, totalPages, hasError } = this.state
     const { Content } = Layout
+    
 
     if (hasError) {
       return <ErrorIndicator errorText={error} />
@@ -117,6 +105,7 @@ export default class Main extends Component {
       query={queryName}
       load={isLoaded}
       genres={genre}
+      guestId={guestId}
     />
 
     return (
@@ -128,4 +117,17 @@ export default class Main extends Component {
       </Content>
     )
   }
+}
+Main.propTypes = {
+  guestId: PropTypes.string.isRequired,
+  genre: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired
+    })
+  ),
+}
+
+Main.defaultProps = {
+  genre: []
 }
