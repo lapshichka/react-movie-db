@@ -8,7 +8,6 @@ import Spinner from '../Spinner/Spinner'
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator'
 import OfflineNotification from '../OfflineNotification/OfflineNotification'
 import MovieView from '../MovieView/MovieView'
-import { ApiClientConsumer } from '../ApiClientsContext/ApiClientsContext'
 
 export default class Main extends Component {
   constructor() {
@@ -83,7 +82,7 @@ export default class Main extends Component {
   }
 
   render() {
-    const { guestId, genre } = this.props
+    const { guestId } = this.props
     const { data, error, isLoaded, currentPage, isOnline, queryName, totalPages, hasError } = this.state
     const { Content } = Layout
     
@@ -104,7 +103,6 @@ export default class Main extends Component {
       updateMovie={this.updateMovie}
       query={queryName}
       load={isLoaded}
-      genres={genre}
       guestId={guestId}
     />
 
@@ -120,14 +118,4 @@ export default class Main extends Component {
 }
 Main.propTypes = {
   guestId: PropTypes.string.isRequired,
-  genre: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired
-    })
-  ),
-}
-
-Main.defaultProps = {
-  genre: []
 }

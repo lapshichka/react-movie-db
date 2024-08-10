@@ -7,7 +7,7 @@ import SiteHeader from './components/SiteHeader/SiteHeader'
 import SiteFooter from './components/SiteFooter/SiteFooter'
 import Main from './components/Main/Main'
 import Rated from './components/Rated/Rated'
-import { ApiClientProvider } from './components/ApiClientsContext/ApiClientsContext'
+import { GenresProvider } from './components/GenresContext/GenresContext'
 
 export default class App extends Component {
   constructor() {
@@ -40,11 +40,8 @@ export default class App extends Component {
   getGenres = async () => {
     const genres = await this.apiClient.fetchGenres()
 
-    const res = await genres
-    const genresData = await res
-
     if (this.mounted) {
-      this.setState({genre: genresData})
+      this.setState({genre: genres})
     }
   }
 
@@ -52,21 +49,21 @@ export default class App extends Component {
     const { guestId, genre } = this.state
 
     return (
-      <ApiClientProvider value={this.apiClient}>
+      <GenresProvider value={genre}>
         <Router>
           <Flex gap="middle" wrap>
             <Layout className='wrapper'>
               <SiteHeader />
               <Routes>
                 <Route path="/" element={<Navigate to="/search" />} />
-                <Route path='/search' element={ <Main guestId={guestId} genre={genre} /> } />
-                <Route path='/rated' element={ <Rated guestId={guestId} genre={genre} /> } />
+                <Route path='/search' element={ <Main guestId={guestId} /> } />
+                <Route path='/rated' element={ <Rated guestId={guestId} /> } />
               </Routes>
               <SiteFooter />
             </Layout>
           </Flex>
         </Router>
-      </ApiClientProvider>
+      </GenresProvider>
     )
   }
 }

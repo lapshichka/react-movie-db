@@ -34,7 +34,7 @@ export default class Rated extends Component {
 
   render() {
     const { Content } = Layout
-    const { guestId, genre } = this.props
+    const { guestId } = this.props
     const { sessionInfo, error } = this.state
 
     return (
@@ -42,7 +42,7 @@ export default class Rated extends Component {
       ? <ErrorIndicator errorText={error} />
       : <Content className='main'>
           <Flex gap="middle" align='center' className='main__container'>
-            <MovieList data={sessionInfo || ''} genres={genre} guestId={guestId} />
+            <MovieList data={sessionInfo || ''} guestId={guestId} />
           </Flex>
         </Content>
     )
@@ -50,13 +50,4 @@ export default class Rated extends Component {
 }
 Rated.propTypes = {
   guestId: PropTypes.string.isRequired,
-  genre: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired
-    })
-  ),
-}
-Rated.defaultProps = {
-  genre: []
 }
